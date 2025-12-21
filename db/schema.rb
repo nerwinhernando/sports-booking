@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_21_232318) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_21_232338) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -66,6 +66,17 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_232318) do
     t.index ["account_id"], name: "index_courts_on_account_id"
     t.index ["venue_id", "court_number"], name: "index_courts_on_venue_id_and_court_number", unique: true
     t.index ["venue_id"], name: "index_courts_on_venue_id"
+  end
+
+  create_table "feature_groups", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.boolean "enabled"
+    t.bigint "feature_id", null: false
+    t.string "group_name"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_feature_groups_on_account_id"
+    t.index ["feature_id"], name: "index_feature_groups_on_feature_id"
   end
 
   create_table "feature_users", force: :cascade do |t|
@@ -214,6 +225,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_232318) do
   add_foreign_key "bookings", "users"
   add_foreign_key "courts", "accounts"
   add_foreign_key "courts", "venues"
+  add_foreign_key "feature_groups", "accounts"
+  add_foreign_key "feature_groups", "features"
   add_foreign_key "feature_users", "accounts"
   add_foreign_key "feature_users", "features"
   add_foreign_key "features", "accounts"
