@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_21_231921) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_21_232101) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -28,6 +28,26 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_231921) do
     t.json "settings"
     t.string "subdomain"
     t.datetime "updated_at", null: false
+  end
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.integer "amount_cents"
+    t.bigint "court_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "end_time"
+    t.text "notes"
+    t.string "payment_method"
+    t.string "payment_reference"
+    t.bigint "schedule_id", null: false
+    t.datetime "start_time"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["account_id"], name: "index_bookings_on_account_id"
+    t.index ["court_id"], name: "index_bookings_on_court_id"
+    t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
   end
 
   create_table "courts", force: :cascade do |t|
@@ -119,6 +139,10 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_231921) do
     t.index ["account_id"], name: "index_venues_on_account_id"
   end
 
+  add_foreign_key "bookings", "accounts"
+  add_foreign_key "bookings", "courts"
+  add_foreign_key "bookings", "schedules"
+  add_foreign_key "bookings", "users"
   add_foreign_key "courts", "accounts"
   add_foreign_key "courts", "venues"
   add_foreign_key "schedules", "accounts"
