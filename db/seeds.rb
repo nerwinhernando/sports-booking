@@ -68,6 +68,26 @@ accounts_data.each do |account_data|
       v.phone = account_data[:phone]
       v.account = account
     end
+
+    # Create courts with different types
+    court_configs = [
+      { number: 'Court 1', type: 'standard', floor: 'wood', aircon: false },
+      { number: 'Court 2', type: 'standard', floor: 'wood', aircon: false },
+      { number: 'Court 3', type: 'premium', floor: 'wood', aircon: true },
+      { number: 'Court 4', type: 'vip', floor: 'synthetic', aircon: true }
+    ]
+
+    court_configs.each do |config|
+      Court.find_or_create_by!(venue: venue, court_number: config[:number], account: account) do |c|
+        c.price_per_hour = config[:type] == 'standard' ? 500 : (config[:type] == 'premium' ? 750 : 1000)
+        c.court_type = config[:type]
+        c.floor_type = config[:floor]
+        c.has_air_conditioning = config[:aircon]
+        c.lighting_type = 'led'
+        c.ceiling_height = 9.5
+      end
+    end
+    puts "    ✓ Created #{court_configs.size} courts"
   end
 end
 

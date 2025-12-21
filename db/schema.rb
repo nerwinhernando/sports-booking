@@ -31,12 +31,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_213638) do
   end
 
   create_table "courts", force: :cascade do |t|
+    t.bigint "account_id", null: false
     t.boolean "active"
+    t.decimal "ceiling_height"
     t.string "court_number", null: false
     t.string "court_type", default: "standard"
     t.datetime "created_at", null: false
+    t.string "floor_type"
+    t.boolean "has_air_conditioning", default: false
+    t.string "lighting_type"
+    t.decimal "price_per_hour", precision: 10, scale: 2, null: false
     t.datetime "updated_at", null: false
     t.bigint "venue_id", null: false
+    t.index ["account_id"], name: "index_courts_on_account_id"
     t.index ["venue_id", "court_number"], name: "index_courts_on_venue_id_and_court_number", unique: true
     t.index ["venue_id"], name: "index_courts_on_venue_id"
   end
@@ -95,6 +102,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_213638) do
     t.index ["account_id"], name: "index_venues_on_account_id"
   end
 
+  add_foreign_key "courts", "accounts"
   add_foreign_key "courts", "venues"
   add_foreign_key "users", "accounts"
   add_foreign_key "venues", "accounts"
