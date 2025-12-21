@@ -48,24 +48,78 @@ accounts_data.each do |account_data|
     end
     puts "    ✓ Admin user: #{admin.email}"
 
-    # Create sample customer
-    customer = User.find_or_create_by!(email: "customer@#{account.subdomain}.ph") do |u|
+    # Create staff user
+    staff = User.find_or_create_by!(email: "staff@#{account.subdomain}.ph") do |u|
       u.password = 'password123'
       u.password_confirmation = 'password123'
-      u.first_name = 'Regular'
-      u.last_name = 'Customer'
-      u.phone = '+63 917 999 9999'
-      u.role = 'customer'
+      u.first_name = 'Staff'
+      u.last_name = 'Member'
+      u.phone = '+63 917 111 1111'
+      u.role = 'staff'
       u.account = account
     end
-    puts "    ✓ Customer user: #{customer.email}"
+    puts "    ✓ Staff: #{staff.email}"
+
+    # Create venue
+    venue = Venue.find_or_create_by!(name: account.name) do |v|
+      v.address = account_data[:address]
+      v.city = account_data[:city]
+      v.province = account_data[:province]
+      v.phone = account_data[:phone]
+      v.account = account
+    end
   end
 end
 
+# Create customers (no account)
+puts "\nCreating customers..."
+
+customers_data = [
+  {
+    email: 'player1@gmail.com',
+    first_name: 'Pedro',
+    last_name: 'Garcia',
+    phone: '+63 917 555 0001',
+    role: 'customer',
+    player_type: 'singles',
+    skill_level: 'intermediate'
+  },
+  {
+    email: 'coach1@gmail.com',
+    first_name: 'Anna',
+    last_name: 'Reyes',
+    phone: '+63 917 555 0002',
+    role: 'coach',
+    player_type: 'both',
+    skill_level: 'professional'
+  }
+]
+
+customers_data.each do |customer_data|
+  customer = User.find_or_create_by!(email: customer_data[:email]) do |u|
+    u.password = 'password123'
+    u.password_confirmation = 'password123'
+    u.first_name = customer_data[:first_name]
+    u.last_name = customer_data[:last_name]
+    u.phone = customer_data[:phone]
+    u.role = customer_data[:role]
+    u.player_type = customer_data[:player_type]
+    u.skill_level = customer_data[:skill_level]
+    # u.account = nil
+  end
+  puts "  ✓ #{customer.role.titleize}: #{customer.email}"
+end
+
 puts "\n✅ Seed completed!"
-puts "\nAccounts created:"
+puts "\nLogin Credentials:"
+puts "  Super Admin: superadmin@badminton.ph / password123"
+puts "\nAccounts:"
 accounts_data.each do |data|
   puts "  - #{data[:subdomain]}.localhost:3000"
   puts "    Admin: #{data[:owner_email]} / password123"
-  puts "    Customer: customer@#{data[:subdomain]}.ph / password123"
+  puts "    Staff: staff@#{data[:subdomain]}.ph / password123"
+end
+puts "\nCustomers (can book at any venue):"
+customers_data.each do |data|
+  puts "  - #{data[:email]} / password123"
 end

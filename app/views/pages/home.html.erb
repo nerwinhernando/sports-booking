@@ -1,9 +1,65 @@
-<h1>Welcome to Sports Booking App</h1>
-<p style="font-size: 1.2em; margin: 20px 0; color: #666;">Multi-tenant sports facility booking platform</p>
+<% if current_account %>
+  <h1>Welcome to <%= current_account.name %></h1>
   
-
-<div style="margin-top: 50px; padding: 30px; background: #f8f9fa; border-radius: 8px;">
-  <h2>For Developers</h2>
-  <p style="margin: 15px 0; color: #666;">Access the admin panel to manage companies, users, venues, and bookings.</p>
-  <p style="margin: 15px 0; color: #666;">API documentation available for mobile app integration.</p>
-</div>
+  <% if @venues.any? %>
+    <h2 style="margin-top: 30px;">Our Venues</h2>
+    <% @venues.each do |venue| %>
+      <div style="background: #f8f9fa; padding: 20px; margin: 20px 0; border-radius: 8px;">
+        <h3 style="margin-bottom: 10px;"><%= venue.name %></h3>
+        <p style="color: #666; margin-bottom: 15px;"><%= venue.address %></p>
+        
+        <% if venue.courts.any? %>
+          <h4 style="margin: 15px 0 10px;">Available Courts</h4>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 15px;">
+            <% venue.courts.each do |court| %>
+              <div style="background: white; padding: 15px; border-radius: 4px; border: 1px solid #ddd;">
+                <div style="font-weight: bold; margin-bottom: 5px;"><%= court.name %></div>
+                <div style="color: #666; font-size: 0.9em; margin-bottom: 5px;">
+                  Type: <%= court.court_type.titleize %>
+                </div>
+                <div style="color: #27ae60; font-weight: bold;">
+                  ₱<%= court.price_per_hour %>/hour
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+  <% else %>
+    <p style="margin-top: 20px; color: #666;">No venues available yet. Please check back later.</p>
+  <% end %>
+  
+  <% unless user_signed_in? %>
+    <div style="margin-top: 40px; padding: 30px; background: #e8f4f8; border-radius: 8px; text-align: center;">
+      <h3 style="margin-bottom: 15px;">Ready to Book?</h3>
+      <p style="margin-bottom: 20px; color: #666;">Sign up or sign in to start booking courts</p>
+      <%= link_to "Sign Up", new_user_registration_path, class: "btn" %>
+      <%= link_to "Sign In", new_user_session_path, class: "btn btn-secondary", style: "margin-left: 10px;" %>
+    </div>
+  <% end %>
+<% else %>
+  <h1>Welcome to Sports Booking App</h1>
+  <p style="font-size: 1.2em; margin: 20px 0; color: #666;">Multi-tenant sports facility booking platform</p>
+  
+  <% if @accounts.any? %>
+    <h2 style="margin-top: 40px;">Available Accounts</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px;">
+      <% @accounts.each do |account| %>
+        <div style="background: #f8f9fa; padding: 25px; border-radius: 8px; border: 1px solid #ddd;">
+          <h3 style="margin-bottom: 10px;"><%= account.name %></h3>
+          <p style="color: #666; margin-bottom: 15px;">Subdomain: <%= account.subdomain %></p>
+          <a href="http://<%= account.subdomain %>.lvh.me:3000" class="btn">Visit Site</a>
+        </div>
+      <% end %>
+    </div>
+  <% else %>
+    <p style="margin-top: 20px; color: #666;">No accounts registered yet.</p>
+  <% end %>
+  
+  <div style="margin-top: 50px; padding: 30px; background: #f8f9fa; border-radius: 8px;">
+    <h2>For Developers</h2>
+    <p style="margin: 15px 0; color: #666;">Access the admin panel to manage accounts, users, venues, and bookings.</p>
+    <p style="margin: 15px 0; color: #666;">API documentation available for mobile app integration.</p>
+  </div>
+<% end %>

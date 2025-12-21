@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_21_210836) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_21_213638) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,8 +30,19 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_210836) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "courts", force: :cascade do |t|
+    t.boolean "active"
+    t.string "court_number", null: false
+    t.string "court_type", default: "standard"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "venue_id", null: false
+    t.index ["venue_id", "court_number"], name: "index_courts_on_venue_id_and_court_number", unique: true
+    t.index ["venue_id"], name: "index_courts_on_venue_id"
+  end
+
   create_table "users", force: :cascade do |t|
-    t.bigint "account_id", null: false
+    t.bigint "account_id"
     t.boolean "active", default: true
     t.datetime "confirmation_sent_at"
     t.string "confirmation_token"
@@ -84,6 +95,7 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_210836) do
     t.index ["account_id"], name: "index_venues_on_account_id"
   end
 
+  add_foreign_key "courts", "venues"
   add_foreign_key "users", "accounts"
   add_foreign_key "venues", "accounts"
 end
