@@ -54,6 +54,11 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
+
+  # RSpec for testing [https://rspec.info/]
+  gem "rspec-rails"
+  gem "factory_bot_rails"
+  gem "faker"
 end
 
 group :development do
@@ -67,3 +72,7 @@ gem "acts_as_tenant"
 # Authentication
 gem "devise"
 gem "jwt"
+
+group :test do
+  gem "shoulda-matchers"
+end
