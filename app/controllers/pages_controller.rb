@@ -4,8 +4,8 @@ class PagesController < ApplicationController
       @account = Account.find_by(subdomain: request.subdomain)
       if @account
         set_current_tenant(@account)
-        # @venues = Venue.includes(:courts).all
-        @venues = Venue.all
+        @venues = Venue.includes(:courts).all
+        # @venues = Venue.all
       else
         redirect_to root_url(subdomain: 'www'), alert: "Account not found"
       end
