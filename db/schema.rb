@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_21_232158) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_21_232220) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -80,6 +80,21 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_232158) do
     t.bigint "venue_id", null: false
     t.index ["account_id"], name: "index_pricing_rules_on_account_id"
     t.index ["venue_id"], name: "index_pricing_rules_on_venue_id"
+  end
+
+  create_table "schedule_blocks", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.boolean "all_day"
+    t.date "block_date"
+    t.bigint "court_id", null: false
+    t.datetime "created_at", null: false
+    t.time "end_time"
+    t.text "notes"
+    t.string "reason"
+    t.time "start_time"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_schedule_blocks_on_account_id"
+    t.index ["court_id"], name: "index_schedule_blocks_on_court_id"
   end
 
   create_table "schedule_templates", force: :cascade do |t|
@@ -179,6 +194,8 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_232158) do
   add_foreign_key "courts", "venues"
   add_foreign_key "pricing_rules", "accounts"
   add_foreign_key "pricing_rules", "venues"
+  add_foreign_key "schedule_blocks", "accounts"
+  add_foreign_key "schedule_blocks", "courts"
   add_foreign_key "schedule_templates", "accounts"
   add_foreign_key "schedule_templates", "venues"
   add_foreign_key "schedules", "accounts"
