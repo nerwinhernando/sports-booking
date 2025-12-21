@@ -69,6 +69,9 @@ end
 # Multi-tenancy
 gem "acts_as_tenant"
 
+# Admin Dashboard
+gem 'administrate', '~> 1.0'
+
 # Authentication
 gem "devise"
 gem "jwt"
