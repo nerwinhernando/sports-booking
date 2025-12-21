@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_21_203858) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_21_210836) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -67,5 +67,23 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_203858) do
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
 
+  create_table "venues", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.boolean "active"
+    t.text "address"
+    t.string "barangay"
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.decimal "latitude"
+    t.decimal "longitude"
+    t.string "municipality"
+    t.string "name"
+    t.string "phone"
+    t.string "province"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_venues_on_account_id"
+  end
+
   add_foreign_key "users", "accounts"
+  add_foreign_key "venues", "accounts"
 end
