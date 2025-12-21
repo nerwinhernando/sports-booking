@@ -61,6 +61,9 @@ group :development do
   gem "web-console"
 end
 
+# Multi-tenancy
+gem "acts_as_tenant"
+
 # Authentication
 gem "devise"
 gem "jwt"

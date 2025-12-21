@@ -10,11 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_21_195641) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_21_203858) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
+  create_table "accounts", force: :cascade do |t|
+    t.boolean "active"
+    t.text "address"
+    t.string "city"
+    t.datetime "created_at", null: false
+    t.string "name"
+    t.string "owner_email"
+    t.string "owner_name"
+    t.string "phone"
+    t.string "plan"
+    t.string "province"
+    t.json "settings"
+    t.string "subdomain"
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
+    t.bigint "account_id", null: false
     t.boolean "active", default: true
     t.datetime "confirmation_sent_at"
     t.string "confirmation_token"
@@ -42,10 +59,13 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_195641) do
     t.string "unconfirmed_email"
     t.string "unlock_token"
     t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_users_on_account_id"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role"], name: "index_users_on_role"
     t.index ["unlock_token"], name: "index_users_on_unlock_token", unique: true
   end
+
+  add_foreign_key "users", "accounts"
 end
