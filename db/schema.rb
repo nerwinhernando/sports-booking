@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.1].define(version: 2025_12_21_213638) do
+ActiveRecord::Schema[8.1].define(version: 2025_12_21_232400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -30,6 +30,26 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_213638) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.integer "amount_cents"
+    t.bigint "court_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "end_time"
+    t.text "notes"
+    t.string "payment_method"
+    t.string "payment_reference"
+    t.bigint "schedule_id", null: false
+    t.datetime "start_time"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.bigint "user_id", null: false
+    t.index ["account_id"], name: "index_bookings_on_account_id"
+    t.index ["court_id"], name: "index_bookings_on_court_id"
+    t.index ["schedule_id"], name: "index_bookings_on_schedule_id"
+    t.index ["user_id"], name: "index_bookings_on_user_id"
+  end
+
   create_table "courts", force: :cascade do |t|
     t.bigint "account_id", null: false
     t.boolean "active"
@@ -46,6 +66,115 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_213638) do
     t.index ["account_id"], name: "index_courts_on_account_id"
     t.index ["venue_id", "court_number"], name: "index_courts_on_venue_id_and_court_number", unique: true
     t.index ["venue_id"], name: "index_courts_on_venue_id"
+  end
+
+  create_table "feature_groups", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.boolean "enabled"
+    t.bigint "feature_id", null: false
+    t.string "group_name"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_feature_groups_on_account_id"
+    t.index ["feature_id"], name: "index_feature_groups_on_feature_id"
+  end
+
+  create_table "feature_users", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.boolean "enabled"
+    t.bigint "feature_id", null: false
+    t.datetime "updated_at", null: false
+    t.string "user_identifier"
+    t.index ["account_id"], name: "index_feature_users_on_account_id"
+    t.index ["feature_id"], name: "index_feature_users_on_feature_id"
+  end
+
+  create_table "feature_venues", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.boolean "enabled"
+    t.bigint "feature_id", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "venue_id", null: false
+    t.index ["account_id"], name: "index_feature_venues_on_account_id"
+    t.index ["feature_id"], name: "index_feature_venues_on_feature_id"
+    t.index ["venue_id"], name: "index_feature_venues_on_venue_id"
+  end
+
+  create_table "features", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.datetime "created_at", null: false
+    t.text "description"
+    t.boolean "enabled"
+    t.string "name"
+    t.integer "rollout_percentage"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_features_on_account_id"
+  end
+
+  create_table "pricing_rules", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.string "day_type"
+    t.time "end_time"
+    t.integer "price_per_hour_cents"
+    t.time "start_time"
+    t.datetime "updated_at", null: false
+    t.bigint "venue_id", null: false
+    t.index ["account_id"], name: "index_pricing_rules_on_account_id"
+    t.index ["venue_id"], name: "index_pricing_rules_on_venue_id"
+  end
+
+  create_table "schedule_blocks", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.boolean "all_day"
+    t.date "block_date"
+    t.bigint "court_id", null: false
+    t.datetime "created_at", null: false
+    t.time "end_time"
+    t.text "notes"
+    t.string "reason"
+    t.time "start_time"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_schedule_blocks_on_account_id"
+    t.index ["court_id"], name: "index_schedule_blocks_on_court_id"
+  end
+
+  create_table "schedule_templates", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.boolean "active"
+    t.datetime "created_at", null: false
+    t.string "day_of_week"
+    t.string "day_type"
+    t.time "end_time"
+    t.boolean "is_peak_hour"
+    t.string "name"
+    t.integer "price_cents"
+    t.integer "slot_duration_minutes"
+    t.time "start_time"
+    t.datetime "updated_at", null: false
+    t.bigint "venue_id", null: false
+    t.index ["account_id"], name: "index_schedule_templates_on_account_id"
+    t.index ["venue_id"], name: "index_schedule_templates_on_venue_id"
+  end
+
+  create_table "schedules", force: :cascade do |t|
+    t.bigint "account_id", null: false
+    t.bigint "court_id", null: false
+    t.datetime "created_at", null: false
+    t.string "day_type"
+    t.time "end_time"
+    t.boolean "is_peak_hour"
+    t.integer "max_bookings"
+    t.integer "price_cents"
+    t.date "schedule_date"
+    t.time "start_time"
+    t.string "status"
+    t.datetime "updated_at", null: false
+    t.index ["account_id"], name: "index_schedules_on_account_id"
+    t.index ["court_id"], name: "index_schedules_on_court_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -102,8 +231,28 @@ ActiveRecord::Schema[8.1].define(version: 2025_12_21_213638) do
     t.index ["account_id"], name: "index_venues_on_account_id"
   end
 
+  add_foreign_key "bookings", "accounts"
+  add_foreign_key "bookings", "courts"
+  add_foreign_key "bookings", "schedules"
+  add_foreign_key "bookings", "users"
   add_foreign_key "courts", "accounts"
   add_foreign_key "courts", "venues"
+  add_foreign_key "feature_groups", "accounts"
+  add_foreign_key "feature_groups", "features"
+  add_foreign_key "feature_users", "accounts"
+  add_foreign_key "feature_users", "features"
+  add_foreign_key "feature_venues", "accounts"
+  add_foreign_key "feature_venues", "features"
+  add_foreign_key "feature_venues", "venues"
+  add_foreign_key "features", "accounts"
+  add_foreign_key "pricing_rules", "accounts"
+  add_foreign_key "pricing_rules", "venues"
+  add_foreign_key "schedule_blocks", "accounts"
+  add_foreign_key "schedule_blocks", "courts"
+  add_foreign_key "schedule_templates", "accounts"
+  add_foreign_key "schedule_templates", "venues"
+  add_foreign_key "schedules", "accounts"
+  add_foreign_key "schedules", "courts"
   add_foreign_key "users", "accounts"
   add_foreign_key "venues", "accounts"
 end

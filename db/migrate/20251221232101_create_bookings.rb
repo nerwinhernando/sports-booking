@@ -1,0 +1,19 @@
+class CreateBookings < ActiveRecord::Migration[8.1]
+  def change
+    create_table :bookings do |t|
+      t.references :account, null: false, foreign_key: true
+      t.references :user, null: false, foreign_key: true
+      t.references :court, null: false, foreign_key: true
+      t.references :schedule, null: false, foreign_key: true
+      t.datetime :start_time
+      t.datetime :end_time
+      t.integer :amount_cents
+      t.string :status
+      t.string :payment_method
+      t.string :payment_reference
+      t.text :notes
+
+      t.timestamps
+    end
+  end
+end

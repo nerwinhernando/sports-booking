@@ -1,9 +1,38 @@
 Rails.application.routes.draw do
+  namespace :api do
+    namespace :v1 do
+      get "auth/login"
+      get "auth/register"
+
+      resources :venues, only: [:index, :show] do
+        member do
+          get 'schedules'
+        end
+      end
+
+      resources :courts, only: [:index, :show] do
+        member do
+          get 'availability'
+          get 'schedules'
+        end
+      end
+
+      resources :schedules, only: [:index, :show]
+
+      resources :bookings, only: [:index, :create, :show] do
+        member do
+          patch 'cancel'
+        end
+      end
+    end
+  end
   namespace :admin do
       resources :accounts
       resources :courts
       resources :users
       resources :venues
+      resources :schedules
+      resources :bookings
 
       root to: "accounts#index"
     end
