@@ -1,5 +1,21 @@
 puts "Seeding multi-tenant badminton booking system..."
 
+
+# Create Super Admin (no tenant)
+puts "\n👑 Creating Super Admin..."
+super_admin = ActsAsTenant.without_tenant do
+  User.create!(
+    email: 'super@example.com',
+    password: 'password123',
+    password_confirmation: 'password123',
+    first_name: 'Super',
+    last_name: 'Admin',
+    role: :super_admin,
+    phone: '555-0000'
+  )
+end
+puts "   ✓ Created: #{super_admin.email}"
+
 # Create sample accounts
 puts "\nCreating accounts..."
 
@@ -37,16 +53,19 @@ accounts_data.each do |account_data|
 
   # Create admin user for each account
   ActsAsTenant.with_tenant(account) do
-    admin = User.find_or_create_by!(email: account_data[:owner_email]) do |u|
-      u.password = 'password123'
-      u.password_confirmation = 'password123'
-      u.first_name = account_data[:owner_name].split.first
-      u.last_name = account_data[:owner_name].split.last
-      u.phone = account_data[:phone]
-      u.role = 'admin'
-      u.account = account
-    end
-    puts "    ✓ Admin user: #{admin.email}"
+    # Create Company Admin
+    puts "  👤 Creating Company Admin..."
+    admin = User.create!(
+      email: "admin@#{account.subdomain}.com",
+      password: 'password123',
+      password_confirmation: 'password123',
+      first_name: 'Admin',
+      last_name: account.name.split.first,
+      role: :admin,
+      account: account,
+      phone: "555-#{rand(1000..9999)}"
+    )
+    puts "     ✓ #{admin.full_name} (#{admin.email})"
 
     # Create staff user
     staff = User.find_or_create_by!(email: "staff@#{account.subdomain}.ph") do |u|
