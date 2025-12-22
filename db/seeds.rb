@@ -1,5 +1,21 @@
 puts "Seeding multi-tenant badminton booking system..."
 
+
+# Create Super Admin (no tenant)
+puts "\n👑 Creating Super Admin..."
+super_admin = ActsAsTenant.without_tenant do
+  User.create!(
+    email: 'super@example.com',
+    password: 'password123',
+    password_confirmation: 'password123',
+    first_name: 'Super',
+    last_name: 'Admin',
+    role: :super_admin,
+    phone: '555-0000'
+  )
+end
+puts "   ✓ Created: #{super_admin.email}"
+
 # Create sample accounts
 puts "\nCreating accounts..."
 
