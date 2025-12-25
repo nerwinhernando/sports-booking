@@ -62,7 +62,7 @@ group :development, :test do
 end
 
 group :development do
-  # Use console on exceptions pages [https://github.com/rails/web-console]
+  gem "letter_opener_web"
   gem "web-console"
 end
 
@@ -75,6 +75,8 @@ gem 'administrate', '~> 1.0'
 # Authentication
 gem "devise"
 gem "jwt"
+
+gem "letter_opener"
 
 group :test do
   gem "shoulda-matchers"
