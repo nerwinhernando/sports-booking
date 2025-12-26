@@ -1,0 +1,93 @@
+<div style="margin-bottom: 2rem;">
+  <h1 style="font-size: 1.875rem; font-weight: bold; color: #111827; margin-bottom: 0.25rem;">Dashboard</h1>
+  <p style="color: #6b7280;">Overview of the entire platform</p>
+</div>
+
+<!-- Stats Grid -->
+<div class="stats-grid">
+  <div class="stat-card">
+    <div class="stat-card-content">
+      <div>
+        <p class="stat-label">Total Accounts</p>
+        <p class="stat-value"><%= @total_accounts %></p>
+        <p class="stat-meta"><%= @active_accounts %> active</p>
+      </div>
+      <div class="stat-icon">🏢</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-content">
+      <div>
+        <p class="stat-label">Total Venues</p>
+        <p class="stat-value"><%= @total_venues %></p>
+      </div>
+      <div class="stat-icon">🏸</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-content">
+      <div>
+        <p class="stat-label">Total Users</p>
+        <p class="stat-value"><%= @total_users %></p>
+      </div>
+      <div class="stat-icon">👥</div>
+    </div>
+  </div>
+
+  <div class="stat-card">
+    <div class="stat-card-content">
+      <div>
+        <p class="stat-label">Total Revenue</p>
+        <p class="stat-value">₱<%= number_with_delimiter(@total_revenue, delimiter: ',') %></p>
+      </div>
+      <div class="stat-icon">💰</div>
+    </div>
+  </div>
+</div>
+
+<div class="section-grid">
+  <!-- Recent Accounts -->
+  <div class="section-card">
+    <h2 class="section-title">Recent Accounts</h2>
+    <div class="item-list">
+      <% @recent_accounts.each do |account| %>
+        <div class="item">
+          <div>
+            <div style="font-weight: 600;"><%= account.name %></div>
+            <div style="font-size: 0.875rem; color: #6b7280;"><%= account.subdomain %></div>
+          </div>
+          <%= link_to "View", super_admin_account_path(account), class: "item-link" %>
+        </div>
+      <% end %>
+    </div>
+    <%= link_to "View All Accounts →", super_admin_accounts_path, class: "view-all-link" %>
+  </div>
+
+  <!-- Recent Bookings -->
+  <div class="section-card">
+    <h2 class="section-title">Recent Bookings</h2>
+    <div class="item-list">
+      <% @recent_bookings.each do |booking| %>
+        <div class="item">
+          <div>
+            <div style="font-weight: 600;">Booking #<%= booking.id %></div>
+            <div style="font-size: 0.875rem; color: #6b7280;">
+              <%= booking.user.full_name %> • <%= booking.court.venue.name %>
+            </div>
+          </div>
+          <div style="text-align: right;">
+            <span class="status-badge status-<%= booking.status %>">
+              <%= booking.status.titleize %>
+            </span>
+            <div style="font-size: 0.875rem; color: #6b7280; margin-top: 0.25rem;">
+              ₱<%= number_with_delimiter(booking.amount_php, delimiter: ',') %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+    <%= link_to "View All Bookings →", super_admin_administrate_bookings_path, class: "view-all-link" %>
+  </div>
+</div>

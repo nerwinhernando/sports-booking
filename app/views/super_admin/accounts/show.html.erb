@@ -1,0 +1,136 @@
+<div class="mb-8">
+  <div class="flex items-center justify-between">
+    <div>
+      <div class="flex items-center space-x-3 mb-2">
+        <h1 class="text-3xl font-bold text-gray-900"><%= @account.name %></h1>
+        <% if @account.active? %>
+          <span class="px-3 py-1 text-sm font-semibold rounded-full bg-green-100 text-green-800">Active</span>
+        <% else %>
+          <span class="px-3 py-1 text-sm font-semibold rounded-full bg-red-100 text-red-800">Inactive</span>
+        <% end %>
+      </div>
+      <p class="text-gray-600"><code><%= @account.subdomain %>.badminton.ph</code></p>
+    </div>
+    <div class="flex space-x-3">
+      <%= link_to "← Back", super_admin_accounts_path, class: "bg-gray-200 text-gray-700 px-6 py-3 rounded-lg hover:bg-gray-300 transition font-semibold" %>
+      <%= link_to "Edit", edit_super_admin_account_path(@account), class: "bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 transition font-semibold" %>
+    </div>
+  </div>
+</div>
+
+<!-- Account Details -->
+<div class="grid md:grid-cols-3 gap-6 mb-8">
+  <div class="md:col-span-2">
+    <div class="bg-white rounded-xl shadow-lg p-6 mb-6">
+      <h2 class="text-xl font-bold mb-4">Account Information</h2>
+      <dl class="grid grid-cols-2 gap-4">
+        <div>
+          <dt class="text-sm text-gray-600">Owner Name</dt>
+          <dd class="text-lg font-semibold text-gray-900"><%= @account.owner_name %></dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-600">Owner Email</dt>
+          <dd class="text-lg font-semibold text-gray-900"><%= @account.owner_email %></dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-600">Phone</dt>
+          <dd class="text-lg font-semibold text-gray-900"><%= @account.phone %></dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-600">Plan</dt>
+          <dd class="text-lg font-semibold text-gray-900"><%= @account.plan&.titleize || 'Basic' %></dd>
+        </div>
+        <div class="col-span-2">
+          <dt class="text-sm text-gray-600">Address</dt>
+          <dd class="text-lg font-semibold text-gray-900">
+            <%= [@account.address, @account.city, @account.province].compact.join(', ') %>
+          </dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-600">Created</dt>
+          <dd class="text-lg font-semibold text-gray-900"><%= @account.created_at.strftime('%B %d, %Y') %></dd>
+        </div>
+        <div>
+          <dt class="text-sm text-gray-600">Last Updated</dt>
+          <dd class="text-lg font-semibold text-gray-900"><%= @account.updated_at.strftime('%B %d, %Y') %></dd>
+        </div>
+      </dl>
+    </div>
+
+    <!-- Venues -->
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <h2 class="text-xl font-bold mb-4">Venues (<%= @account.venues.count %>)</h2>
+      <% if @account.venues.any? %>
+        <div class="space-y-3">
+          <% @account.venues.each do |venue| %>
+            <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h3 class="font-semibold text-gray-900"><%= venue.name %></h3>
+                  <p class="text-sm text-gray-600"><%= venue.full_address %></p>
+                  <p class="text-sm text-gray-500 mt-1">
+                    <%= pluralize(venue.courts.count, 'court') %>
+                  </p>
+                </div>
+                <%= link_to super_admin_venue_path(venue), class: "text-blue-600 hover:text-blue-800" do %>
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                  </svg>
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      <% else %>
+        <p class="text-gray-500 text-center py-8">No venues yet</p>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Stats Sidebar -->
+  <div class="space-y-6">
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <h3 class="font-semibold mb-4">Statistics</h3>
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-sm text-gray-600">Total Venues</span>
+            <span class="text-2xl font-bold text-blue-600"><%= @account.venues.count %></span>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-sm text-gray-600">Total Courts</span>
+            <span class="text-2xl font-bold text-green-600"><%= @account.courts.count %></span>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-sm text-gray-600">Total Bookings</span>
+            <span class="text-2xl font-bold text-purple-600"><%= @account.bookings.count %></span>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between items-center mb-1">
+            <span class="text-sm text-gray-600">Total Users</span>
+            <span class="text-2xl font-bold text-yellow-600"><%= @account.users.count %></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-white rounded-xl shadow-lg p-6">
+      <h3 class="font-semibold mb-4">Quick Actions</h3>
+      <div class="space-y-2">
+        <a href="http://<%= @account.subdomain %>.lvh.me:3000" target="_blank" class="block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition">
+          Visit Site
+        </a>
+        <% if @account.active? %>
+          <%= button_to "Deactivate", deactivate_super_admin_account_path(@account), method: :patch, class: "block w-full bg-red-600 text-white text-center py-2 rounded-lg hover:bg-red-700 transition", data: { confirm: 'Are you sure?' } %>
+        <% else %>
+          <%= button_to "Activate", activate_super_admin_account_path(@account), method: :patch, class: "block w-full bg-green-600 text-white text-center py-2 rounded-lg hover:bg-green-700 transition" %>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

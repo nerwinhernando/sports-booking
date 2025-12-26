@@ -38,7 +38,44 @@ Rails.application.routes.draw do
     get 'search', to: 'pages#search'
 
     namespace :super_admin do
-      get '/', to: 'accounts#index', as: :root
+      get '/', to: 'dashboard#index', as: :root
+
+      resources :accounts do
+        member do
+          patch :activate
+          patch :deactivate
+        end
+      end
+
+      resources :users, only: [:index, :show, :edit, :update] do
+        collection do
+          get :search
+        end
+        member do
+          patch :toggle_active
+        end
+      end
+    end
+
+    namespace :super_admin_administrate do
+      get '/', to: 'dashboard#index', as: :root
+      get 'dashboard', to: 'dashboard#index'
+
+      resources :accounts do
+        member do
+          patch :activate
+          patch :deactivate
+        end
+      end
+
+      resources :users do
+        member do
+          patch :toggle_active
+        end
+      end
+
+      resources :bookings, only: [:index, :show]
+      resources :venues, only: [:index, :show]
     end
   end
 
