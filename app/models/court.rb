@@ -3,6 +3,8 @@ class Court < ApplicationRecord
   belongs_to :account
   belongs_to :venue
 
+  has_many :schedules, dependent: :destroy
+
   COURT_TYPES = %w[standard premium vip training].freeze
   validates :court_type, inclusion: { in: COURT_TYPES }
 

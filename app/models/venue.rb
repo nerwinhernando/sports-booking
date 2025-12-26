@@ -2,6 +2,7 @@ class Venue < ApplicationRecord
   acts_as_tenant :account
   belongs_to :account
   has_many :courts, dependent: :destroy
+  has_many :schedules, through: :courts
 
   validates :name, presence: true
   validates :city, presence: true
