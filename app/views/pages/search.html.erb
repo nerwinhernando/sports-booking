@@ -1,0 +1,271 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Search Header -->
+  <div class="bg-white shadow-md sticky top-0 z-50">
+    <div class="container mx-auto px-4 py-4">
+      <div class="flex items-center justify-between mb-4">
+        <%= link_to root_path, class: "flex items-center space-x-2" do %>
+          <span class="text-3xl">🏸</span>
+          <span class="text-xl font-bold text-blue-600">BadmintonPH</span>
+        <% end %>
+
+        <div class="flex items-center space-x-4">
+          <% if user_signed_in? %>
+            <%= link_to "My Bookings", bookings_path, class: "text-gray-700 hover:text-blue-600" %>
+            <%= link_to current_user.full_name, edit_user_registration_path, class: "text-gray-700 hover:text-blue-600" %>
+          <% else %>
+            <%= link_to "Sign In", new_user_session_path, class: "text-gray-700 hover:text-blue-600" %>
+            <%= link_to "Sign Up", new_user_registration_path, class: "bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+          <% end %>
+        </div>
+      </div>
+
+      <!-- Search Form -->
+      <%= form_with url: search_path, method: :get, class: "w-full" do |f| %>
+        <div class="grid md:grid-cols-12 gap-3 bg-gray-50 rounded-xl p-3">
+          <div class="md:col-span-3">
+            <%= f.text_field :query, 
+                            placeholder: "Search location...",
+                            value: @query,
+                            class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" %>
+          </div>
+
+          <div class="md:col-span-2">
+            <%= f.select :province,
+                        options_for_select([['All Provinces', '']] + @provinces.map { |p| [p, p] }, @province),
+                        {},
+                        class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" %>
+          </div>
+
+          <div class="md:col-span-2">
+            <%= f.select :city,
+                        options_for_select([['All Cities', '']] + @cities, @city),
+                        {},
+                        class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" %>
+          </div>
+
+          <div class="md:col-span-2">
+            <%= f.date_field :date,
+                            value: @date,
+                            min: Date.current,
+                            class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" %>
+          </div>
+
+          <div class="md:col-span-2">
+            <%= f.select :time,
+                        options_for_select([['Any Time', '']] + @available_times.map { |h| ["#{h}:00", h] }, @time),
+                        {},
+                        class: "w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition" %>
+          </div>
+
+          <div class="md:col-span-1">
+            <%= f.submit "Search", class: "w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer" %>
+          </div>
+        </div>
+
+        <!-- Advanced Filters -->
+        <div class="mt-3 flex gap-2 flex-wrap">
+          <% Court::COURT_TYPES.each do |type| %>
+            <%= link_to search_path(query: @query, province: @province, city: @city, date: @date, time: @time, court_type: type),
+                       class: "px-4 py-2 rounded-full text-sm font-medium transition #{@court_type == type ? 'bg-blue-600 text-white' : 'bg-white text-gray-700 border border-gray-300 hover:border-blue-500'}" do %>
+              <%= type.titleize %>
+            <% end %>
+          <% end %>
+
+          <% if @query.present? || @province.present? || @city.present? || @court_type.present? %>
+            <%= link_to "Clear Filters", search_path(date: @date, time: @time), class: "px-4 py-2 rounded-full text-sm font-medium bg-gray-200 text-gray-700 hover:bg-gray-300 transition" %>
+          <% end %>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+  <!-- Results -->
+  <div class="container mx-auto px-4 py-8">
+    <% if @schedules_by_venue.present? %>
+      <!-- Show Schedules Grouped by Venue -->
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+          Available Courts for <%= @date.strftime('%A, %B %d, %Y') %>
+        </h1>
+        <p class="text-gray-600">
+          Found <%= @schedules_by_venue.values.sum(&:count) %> available time slots 
+          <% if @time.present? %>
+            around <%= @time %>:00
+          <% end %>
+        </p>
+      </div>
+
+      <div class="space-y-8">
+        <% @schedules_by_venue.each do |venue, schedules| %>
+          <div class="bg-white rounded-2xl shadow-lg overflow-hidden">
+            <!-- Venue Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-blue-700 p-6 text-white">
+              <div class="flex justify-between items-start">
+                <div>
+                  <h2 class="text-2xl font-bold mb-2"><%= venue.name %></h2>
+                  <div class="flex items-center space-x-4 text-blue-100 text-sm">
+                    <span>📍 <%= venue.city %>, <%= venue.province %></span>
+                    <span>📞 <%= venue.phone %></span>
+                  </div>
+                </div>
+                <%= link_to "View Venue", venue_path(venue), class: "bg-white text-blue-600 px-6 py-2 rounded-lg font-semibold hover:bg-blue-50 transition" %>
+              </div>
+            </div>
+
+            <!-- Available Schedules -->
+            <div class="p-6">
+              <h3 class="font-semibold text-gray-900 mb-4">
+                <%= pluralize(schedules.count, 'Available Slot') %>
+              </h3>
+
+              <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <% schedules.group_by { |s| s.court }.each do |court, court_schedules| %>
+                  <% court_schedules.first(4).each do |schedule| %>
+                    <%= link_to new_booking_path(schedule_id: schedule.id), class: "block" do %>
+                      <div class="border-2 border-gray-200 rounded-xl p-4 hover:border-blue-500 hover:shadow-md transition group">
+                        <div class="flex justify-between items-start mb-2">
+                          <div class="font-semibold text-gray-900 group-hover:text-blue-600">
+                            <%= court.display_name %>
+                          </div>
+                          <% if schedule.is_peak_hour? %>
+                            <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">Peak</span>
+                          <% end %>
+                        </div>
+
+                        <div class="text-sm text-gray-600 mb-3">
+                          <%= court.features_list %>
+                        </div>
+
+                        <div class="flex justify-between items-end">
+                          <div>
+                            <div class="text-lg font-bold text-gray-900">
+                              <%= schedule.start_time.strftime('%I:%M %p') %>
+                            </div>
+                            <div class="text-xs text-gray-500">
+                              <%= schedule.duration_hours %> hour
+                            </div>
+                          </div>
+                          <div class="text-right">
+                            <div class="text-xl font-bold text-blue-600">
+                              ₱<%= number_with_delimiter(schedule.price_php, delimiter: ',') %>
+                            </div>
+                            <div class="text-xs text-gray-500">per hour</div>
+                          </div>
+                        </div>
+
+                        <div class="mt-3 pt-3 border-t border-gray-100">
+                          <div class="text-blue-600 font-semibold text-sm group-hover:text-blue-700">
+                            Book Now →
+                          </div>
+                        </div>
+                      </div>
+                    <% end %>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <% if schedules.count > 8 %>
+                <div class="mt-4 text-center">
+                  <%= link_to "View All #{schedules.count} Slots at #{venue.name}", 
+                             venue_path(venue, date: @date), 
+                             class: "text-blue-600 hover:text-blue-800 font-semibold" %>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      </div>
+
+    <% elsif @venues.any? %>
+      <!-- Show Venues (no specific time search) -->
+      <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900 mb-2">
+          <%= pluralize(@venues.total_count, 'Venue') %> Found
+        </h1>
+        <p class="text-gray-600">
+          <% if @query.present? %>
+            Showing results for "<%= @query %>"
+          <% elsif @province.present? || @city.present? %>
+            in <%= [@city, @province].compact.join(', ') %>
+          <% end %>
+        </p>
+      </div>
+
+      <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <% @venues.each do |venue| %>
+          <%= link_to venue_path(venue, date: @date), class: "block group" do %>
+            <div class="bg-white rounded-2xl shadow-lg overflow-hidden hover:shadow-2xl transition-all duration-300 transform hover:-translate-y-1">
+              <div class="aspect-video bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                <div class="text-center text-white">
+                  <div class="text-6xl mb-2">🏸</div>
+                  <div class="font-semibold"><%= venue.courts.active.count %> Courts</div>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <h3 class="text-xl font-bold text-gray-900 mb-2 group-hover:text-blue-600 transition">
+                  <%= venue.name %>
+                </h3>
+
+                <div class="space-y-2 text-sm text-gray-600 mb-4">
+                  <div class="flex items-start">
+                    <span class="mr-2">📍</span>
+                    <span><%= venue.city %>, <%= venue.province %></span>
+                  </div>
+                  <div class="flex items-start">
+                    <span class="mr-2">📞</span>
+                    <span><%= venue.phone %></span>
+                  </div>
+                </div>
+
+                <div class="flex flex-wrap gap-2 mb-4">
+                  <% venue.courts.active.pluck(:court_type).uniq.each do |type| %>
+                    <span class="text-xs px-3 py-1 bg-blue-100 text-blue-800 rounded-full">
+                      <%= type.titleize %>
+                    </span>
+                  <% end %>
+                  <% if venue.courts.active.where(has_air_conditioning: true).exists? %>
+                    <span class="text-xs px-3 py-1 bg-green-100 text-green-800 rounded-full">
+                      Air Conditioned
+                    </span>
+                  <% end %>
+                </div>
+
+                <div class="pt-4 border-t border-gray-100">
+                  <div class="text-blue-600 font-semibold group-hover:text-blue-800">
+                    View Available Courts →
+                  </div>
+                </div>
+              </div>
+            </div>
+          <% end %>
+        <% end %>
+      </div>
+
+      <div class="mt-8">
+        <%= paginate @venues %>
+      </div>
+
+    <% else %>
+      <!-- No Results -->
+      <div class="text-center py-20">
+        <div class="text-8xl mb-6">🔍</div>
+        <h2 class="text-3xl font-bold text-gray-900 mb-4">No courts found</h2>
+        <p class="text-xl text-gray-600 mb-8">
+          Try adjusting your search filters or 
+          <%= link_to "browse all venues", search_path, class: "text-blue-600 hover:text-blue-800 font-semibold" %>
+        </p>
+        
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-6 max-w-md mx-auto">
+          <h3 class="font-semibold text-gray-900 mb-3">Search Tips:</h3>
+          <ul class="text-sm text-gray-700 space-y-2 text-left">
+            <li>• Try searching by city or province</li>
+            <li>• Remove some filters for more results</li>
+            <li>• Try a different date or time</li>
+            <li>• Check if you spelled everything correctly</li>
+          </ul>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</div>
