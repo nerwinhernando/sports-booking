@@ -1,0 +1,230 @@
+<div class="min-h-screen bg-gray-50">
+  <!-- Hero Section -->
+  <section class="relative bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto text-center">
+        <h1 class="text-5xl md:text-6xl font-bold mb-6">
+          <%= current_account.name %>
+        </h1>
+        <p class="text-xl md:text-2xl text-blue-100 mb-8">
+          Book premium badminton courts online. Instant confirmation, best prices.
+        </p>
+
+        <!-- Quick Stats -->
+        <div class="grid grid-cols-3 gap-6 max-w-2xl mx-auto mt-12">
+          <div class="bg-white/10 backdrop-blur rounded-lg p-6">
+            <div class="text-3xl font-bold"><%= @venues.sum { |v| v.courts.active.count } %></div>
+            <div class="text-blue-100 mt-1">Courts</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-lg p-6">
+            <div class="text-3xl font-bold"><%= @featured_schedules.count %></div>
+            <div class="text-blue-100 mt-1">Available Slots</div>
+          </div>
+          <div class="bg-white/10 backdrop-blur rounded-lg p-6">
+            <div class="text-3xl font-bold">₱<%= @featured_schedules.minimum(:price_cents).to_i / 100 %>+</div>
+            <div class="text-blue-100 mt-1">Starting Price</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Booking -->
+  <section class="py-12 bg-white shadow-lg -mt-10 relative z-10">
+    <div class="container mx-auto px-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-bold text-center mb-6">Book a Court Now</h2>
+        
+        <%= form_with url: search_path, method: :get, class: "grid md:grid-cols-4 gap-4" do |f| %>
+          <div class="md:col-span-2">
+            <%= f.date_field :date, 
+                            value: Date.current,
+                            min: Date.current,
+                            class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" %>
+          </div>
+          
+          <div>
+            <%= f.select :time,
+                        options_for_select([['Any Time', '']] + (6..22).map { |h| ["#{h}:00", h] }),
+                        {},
+                        class: "w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-600 focus:border-transparent" %>
+          </div>
+          
+          <div>
+            <%= f.submit "Search", class: "w-full bg-blue-600 text-white py-3 rounded-lg font-semibold hover:bg-blue-700 transition cursor-pointer" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </section>
+
+  <!-- Available Today -->
+  <% if @featured_schedules.any? %>
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-3xl font-bold">Available This Week</h2>
+          <%= link_to "View All", search_path, class: "text-blue-600 hover:text-blue-800 font-semibold" %>
+        </div>
+
+        <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-6">
+          <% @featured_schedules.each do |schedule| %>
+            <%= link_to new_booking_path(schedule_id: schedule.id), class: "block" do %>
+              <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition border-2 border-transparent hover:border-blue-500 overflow-hidden group">
+                <div class="bg-gradient-to-br from-blue-500 to-blue-600 text-white p-4">
+                  <div class="font-bold text-lg mb-1"><%= schedule.court.display_name %></div>
+                  <div class="text-sm text-blue-100"><%= schedule.court.venue.name %></div>
+                </div>
+
+                <div class="p-4">
+                  <div class="mb-3">
+                    <div class="text-sm text-gray-600 mb-1">
+                      <%= schedule.schedule_date.strftime('%A, %b %d') %>
+                    </div>
+                    <div class="text-lg font-bold text-gray-900">
+                      <%= schedule.start_time.strftime('%I:%M %p') %>
+                    </div>
+                    <div class="text-xs text-gray-500">
+                      <%= schedule.duration_hours %> hour
+                    </div>
+                  </div>
+
+                  <div class="flex items-center justify-between pt-3 border-t border-gray-100">
+                    <div>
+                      <div class="text-2xl font-bold text-blue-600">
+                        ₱<%= number_with_delimiter(schedule.price_php, delimiter: ',') %>
+                      </div>
+                      <% if schedule.is_peak_hour? %>
+                        <span class="text-xs px-2 py-1 bg-yellow-100 text-yellow-800 rounded-full">Peak</span>
+                      <% end %>
+                    </div>
+                    <div class="text-blue-600 font-semibold group-hover:text-blue-800">
+                      Book →
+                    </div>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Our Courts -->
+  <% if @popular_courts.any? %>
+    <section class="py-16 bg-gray-100">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8 text-center">Our Courts</h2>
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <% @popular_courts.each do |court| %>
+            <div class="bg-white rounded-xl shadow-md overflow-hidden">
+              <div class="aspect-video bg-gradient-to-br from-blue-400 to-blue-600 flex items-center justify-center">
+                <div class="text-center text-white">
+                  <div class="text-5xl mb-2">🏸</div>
+                  <div class="font-bold text-xl"><%= court.court_number %></div>
+                </div>
+              </div>
+
+              <div class="p-6">
+                <h3 class="font-bold text-xl mb-2"><%= court.display_name %></h3>
+                
+                <div class="space-y-2 text-sm text-gray-600 mb-4">
+                  <div>Type: <span class="font-semibold text-gray-900"><%= court.court_type.titleize %></span></div>
+                  <div>Floor: <span class="font-semibold text-gray-900"><%= court.floor_type.titleize %></span></div>
+                  <% if court.has_air_conditioning? %>
+                    <div class="flex items-center text-green-600">
+                      <span class="mr-1">❄️</span>
+                      Air Conditioned
+                    </div>
+                  <% end %>
+                </div>
+
+                <%= link_to search_path(court_type: court.court_type, date: Date.current), 
+                           class: "block w-full bg-blue-600 text-white text-center py-2 rounded-lg hover:bg-blue-700 transition font-semibold" do %>
+                  View Schedule
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Venues -->
+  <% if @venues.count > 1 %>
+    <section class="py-16">
+      <div class="container mx-auto px-4">
+        <h2 class="text-3xl font-bold mb-8 text-center">Our Locations</h2>
+
+        <div class="grid md:grid-cols-2 gap-6">
+          <% @venues.each do |venue| %>
+            <%= link_to venue_path(venue), class: "block" do %>
+              <div class="bg-white rounded-xl shadow-md hover:shadow-xl transition p-6">
+                <h3 class="text-xl font-bold mb-2"><%= venue.name %></h3>
+                <div class="text-gray-600 mb-4">
+                  <div class="flex items-start mb-2">
+                    <span class="mr-2">📍</span>
+                    <span><%= venue.full_address %></span>
+                  </div>
+                  <div class="flex items-center">
+                    <span class="mr-2">📞</span>
+                    <span><%= venue.phone %></span>
+                  </div>
+                </div>
+                <div class="text-blue-600 font-semibold">
+                  <%= pluralize(venue.courts.active.count, 'Court') %> Available →
+                </div>
+              </div>
+            <% end %>
+          <% end %>
+        </div>
+      </div>
+    </section>
+  <% end %>
+
+  <!-- Why Book With Us -->
+  <section class="py-16 bg-gradient-to-r from-blue-600 to-blue-800 text-white">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-12 text-center">Why Book With Us?</h2>
+
+      <div class="grid md:grid-cols-4 gap-8">
+        <div class="text-center">
+          <div class="text-5xl mb-4">⚡</div>
+          <h3 class="font-bold text-xl mb-2">Instant Booking</h3>
+          <p class="text-blue-100">Get immediate confirmation</p>
+        </div>
+
+        <div class="text-center">
+          <div class="text-5xl mb-4">💰</div>
+          <h3 class="font-bold text-xl mb-2">Best Prices</h3>
+          <p class="text-blue-100">Competitive rates guaranteed</p>
+        </div>
+
+        <div class="text-center">
+          <div class="text-5xl mb-4">🏆</div>
+          <h3 class="font-bold text-xl mb-2">Premium Courts</h3>
+          <p class="text-blue-100">Top-quality facilities</p>
+        </div>
+
+        <div class="text-center">
+          <div class="text-5xl mb-4">📱</div>
+          <h3 class="font-bold text-xl mb-2">Easy Booking</h3>
+          <p class="text-blue-100">Book in just a few clicks</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="py-16 text-center">
+    <div class="container mx-auto px-4">
+      <h2 class="text-3xl font-bold mb-4">Ready to Play?</h2>
+      <p class="text-xl text-gray-600 mb-8">Book your court now and enjoy the game!</p>
+      <%= link_to "Find Available Courts", search_path, 
+                 class: "inline-block bg-blue-600 text-white px-8 py-4 rounded-lg text-lg font-semibold hover:bg-blue-700 transition shadow-lg" %>
+    </div>
+  </section>
+</div>

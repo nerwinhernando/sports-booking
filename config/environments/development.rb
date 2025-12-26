@@ -20,9 +20,11 @@ Rails.application.configure do
 
   config.hosts << "makati.lvh.me:3000"
   config.hosts << "metromanila.lvh.me:3000"
+  config.hosts << "makatisports.lvh.me:3000"
 
   config.hosts << "www.metromanila.lvh.me:3000"
   config.hosts << "www.makati.lvh.me:3000"
+  config.hosts << "www.makatisports.lvh.me:3000"
 
   # Enable/disable Action Controller caching. By default Action Controller caching is disabled.
   # Run rails dev:cache to toggle Action Controller caching.
