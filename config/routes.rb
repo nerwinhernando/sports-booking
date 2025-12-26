@@ -21,6 +21,10 @@ Rails.application.routes.draw do
   # Search functionality (available everywhere)
   get 'search', to: 'pages#search'
 
+  # Public pages
+  get 'terms', to: 'pages#terms'
+  get 'privacy', to: 'pages#privacy'
+
   # Public browsing
   resources :venues, only: [:index, :show]
   resources :bookings, only: [:index, :show]
