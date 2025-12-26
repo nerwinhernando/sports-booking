@@ -1,6 +1,7 @@
 class Account < ApplicationRecord
   has_many :users, dependent: :destroy
   has_many :venues, dependent: :destroy
+  has_many :courts, dependent: :destroy
 
   validates :name, presence: true
   validates :subdomain, presence: true, uniqueness: true
