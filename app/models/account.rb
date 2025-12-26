@@ -1,5 +1,6 @@
 class Account < ApplicationRecord
   has_many :users, dependent: :destroy
+  has_many :venues, dependent: :destroy
 
   validates :name, presence: true
   validates :subdomain, presence: true, uniqueness: true
@@ -27,5 +28,9 @@ class Account < ApplicationRecord
 
   def downcase_subdomain
     self.subdomain = subdomain.downcase if subdomain.present?
+  end
+
+  def normalize_subdomain
+    self.subdomain = subdomain.to_s.downcase.strip
   end
 end
