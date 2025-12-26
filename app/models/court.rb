@@ -3,6 +3,7 @@ class Court < ApplicationRecord
   belongs_to :account
   belongs_to :venue
 
+  has_many :bookings, dependent: :destroy
   has_many :schedules, dependent: :destroy
 
   COURT_TYPES = %w[standard premium vip training].freeze
