@@ -571,6 +571,26 @@ accounts_data.each do |account_data|
       end
     end
     puts "    ✓ Created #{court_configs.size} courts"
+
+    # Create feature flags for this account
+    features = [
+      { name: 'online_booking', description: 'Enable online booking', enabled: true, rollout_percentage: 100 },
+      { name: 'mobile_app_booking', description: 'Mobile app booking', enabled: true, rollout_percentage: 100 },
+      { name: 'instant_confirmation', description: 'Instant booking confirmation', enabled: account_data[:plan] != 'basic', rollout_percentage: 100 },
+      { name: 'dynamic_pricing', description: 'Dynamic pricing', enabled: account_data[:plan] == 'enterprise', rollout_percentage: 100 },
+      { name: 'qr_code_checkin', description: 'QR code check-in', enabled: account_data[:plan] == 'enterprise', rollout_percentage: 100 },
+      { name: 'loyalty_points', description: 'Loyalty points system', enabled: true, rollout_percentage: 100 },
+      { name: 'vip_discount', description: 'VIP discounts', enabled: true, rollout_percentage: 100 },
+    ]
+
+    features.each do |feature_data|
+      Feature.find_or_create_by!(name: feature_data[:name], account: account) do |f|
+        f.description = feature_data[:description]
+        f.enabled = feature_data[:enabled]
+        f.rollout_percentage = feature_data[:rollout_percentage]
+      end
+    end
+    puts "    ✓ Feature flags configured"
   end
 end
 
