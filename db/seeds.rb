@@ -35,7 +35,8 @@ accounts_data = [
     plan: 'enterprise',
     courts: 8,
     latitude: 14.5858,
-    longitude: 121.0614
+    longitude: 121.0614,
+    active: true
   },
   {
     name: 'Rizal Memorial Badminton Hall',
@@ -51,7 +52,8 @@ accounts_data = [
     plan: 'premium',
     courts: 6,
     latitude: 14.5764,
-    longitude: 120.9933
+    longitude: 120.9933,
+    active: true
   },
   {
     name: 'SM Mall of Asia Badminton Courts',
@@ -67,7 +69,8 @@ accounts_data = [
     plan: 'enterprise',
     courts: 10,
     latitude: 14.5362,
-    longitude: 120.9822
+    longitude: 120.9822,
+    active: true
   },
   {
     name: 'Ultra Badminton Center',
@@ -83,7 +86,8 @@ accounts_data = [
     plan: 'premium',
     courts: 12,
     latitude: 14.5875,
-    longitude: 121.0542
+    longitude: 121.0542,
+    active: true
   },
   {
     name: 'Araneta Coliseum Sports Complex',
@@ -99,7 +103,8 @@ accounts_data = [
     plan: 'enterprise',
     courts: 8,
     latitude: 14.6201,
-    longitude: 121.0514
+    longitude: 121.0514,
+    active: true
   },
   {
     name: 'BGC Badminton Hub',
@@ -115,7 +120,8 @@ accounts_data = [
     plan: 'premium',
     courts: 6,
     latitude: 14.5513,
-    longitude: 121.0470
+    longitude: 121.0470,
+    active: true
   },
   {
     name: 'Makati Sports Club - Badminton',
@@ -131,7 +137,8 @@ accounts_data = [
     plan: 'enterprise',
     courts: 10,
     latitude: 14.5547,
-    longitude: 121.0244
+    longitude: 121.0244,
+    active: true
   },
   {
     name: 'Marikina Sports Center',
@@ -147,310 +154,324 @@ accounts_data = [
     plan: 'basic',
     courts: 4,
     latitude: 14.6507,
-    longitude: 121.1029
+    longitude: 121.1029,
+    active: true
   },
   # Cavite
-  # {
-  #   name: 'Imus Sports Complex',
-  #   subdomain: 'imus',
-  #   owner_name: 'Emmanuel Cruz',
-  #   owner_email: 'admin@imus.badminton.ph',
-  #   phone: '+63 917 901 2345',
-  #   address: 'Aguinaldo Highway',
-  #   city: 'Imus',
-  #   province: 'Cavite',
-  #   municipality: 'Imus',
-  #   barangay: 'Poblacion',
-  #   plan: 'premium',
-  #   courts: 6,
-  #   latitude: 14.4297,
-  #   longitude: 120.9367
-  # },
-  # {
-  #   name: 'Tagaytay Highlands Badminton Club',
-  #   subdomain: 'tagaytay',
-  #   owner_name: 'Victoria Mendoza',
-  #   owner_email: 'admin@tagaytay.badminton.ph',
-  #   phone: '+63 917 012 3456',
-  #   address: 'Tagaytay-Calamba Road',
-  #   city: 'Tagaytay',
-  #   province: 'Cavite',
-  #   municipality: 'Tagaytay',
-  #   barangay: 'Maharlika East',
-  #   plan: 'premium',
-  #   courts: 5,
-  #   latitude: 14.1053,
-  #   longitude: 120.9601
-  # },
-  # {
-  #   name: 'Dasmariñas Badminton Arena',
-  #   subdomain: 'dasmarinas',
-  #   owner_name: 'Roberto Villanueva',
-  #   owner_email: 'admin@dasmarinas.badminton.ph',
-  #   phone: '+63 917 123 4568',
-  #   address: 'Governors Drive',
-  #   city: 'Dasmariñas',
-  #   province: 'Cavite',
-  #   municipality: 'Dasmariñas',
-  #   barangay: 'Paliparan',
-  #   plan: 'basic',
-  #   courts: 4,
-  #   latitude: 14.3294,
-  #   longitude: 120.9367
-  # },
-  # # Laguna
-  # {
-  #   name: 'Sta. Rosa Sports Hub',
-  #   subdomain: 'starosa',
-  #   owner_name: 'Miguel Torres',
-  #   owner_email: 'admin@starosa.badminton.ph',
-  #   phone: '+63 917 234 5679',
-  #   address: 'Greenfield City',
-  #   city: 'Sta. Rosa',
-  #   province: 'Laguna',
-  #   municipality: 'Sta. Rosa',
-  #   barangay: 'Don Jose',
-  #   plan: 'premium',
-  #   courts: 8,
-  #   latitude: 14.3123,
-  #   longitude: 121.1114
-  # },
-  # {
-  #   name: 'Calamba Premier Badminton',
-  #   subdomain: 'calamba',
-  #   owner_name: 'Elena Aquino',
-  #   owner_email: 'admin@calamba.badminton.ph',
-  #   phone: '+63 917 345 6780',
-  #   address: 'National Highway',
-  #   city: 'Calamba',
-  #   province: 'Laguna',
-  #   municipality: 'Calamba',
-  #   barangay: 'Real',
-  #   plan: 'basic',
-  #   courts: 5,
-  #   latitude: 14.2167,
-  #   longitude: 121.1655
-  # },
-  # {
-  #   name: 'Los Baños Sports Complex',
-  #   subdomain: 'losbanos',
-  #   owner_name: 'Carlos Bautista',
-  #   owner_email: 'admin@losbanos.badminton.ph',
-  #   phone: '+63 917 456 7891',
-  #   address: 'Lopez Avenue',
-  #   city: 'Los Baños',
-  #   province: 'Laguna',
-  #   municipality: 'Los Baños',
-  #   barangay: 'Poblacion',
-  #   plan: 'basic',
-  #   courts: 4,
-  #   latitude: 14.1656,
-  #   longitude: 121.2414
-  # },
+  {
+    name: 'Imus Sports Complex',
+    subdomain: 'imus',
+    owner_name: 'Emmanuel Cruz',
+    owner_email: 'admin@imus.badminton.ph',
+    phone: '+63 917 901 2345',
+    address: 'Aguinaldo Highway',
+    city: 'Imus',
+    province: 'Cavite',
+    municipality: 'Imus',
+    barangay: 'Poblacion',
+    plan: 'premium',
+    courts: 6,
+    latitude: 14.4297,
+    longitude: 120.9367,
+    active: true
+  },
+  {
+    name: 'Tagaytay Highlands Badminton Club',
+    subdomain: 'tagaytay',
+    owner_name: 'Victoria Mendoza',
+    owner_email: 'admin@tagaytay.badminton.ph',
+    phone: '+63 917 012 3456',
+    address: 'Tagaytay-Calamba Road',
+    city: 'Tagaytay',
+    province: 'Cavite',
+    municipality: 'Tagaytay',
+    barangay: 'Maharlika East',
+    plan: 'premium',
+    courts: 5,
+    latitude: 14.1053,
+    longitude: 120.9601,
+    active: true
+  },
+  {
+    name: 'Dasmariñas Badminton Arena',
+    subdomain: 'dasmarinas',
+    owner_name: 'Roberto Villanueva',
+    owner_email: 'admin@dasmarinas.badminton.ph',
+    phone: '+63 917 123 4568',
+    address: 'Governors Drive',
+    city: 'Dasmariñas',
+    province: 'Cavite',
+    municipality: 'Dasmariñas',
+    barangay: 'Paliparan',
+    plan: 'basic',
+    courts: 4,
+    latitude: 14.3294,
+    longitude: 120.9367,
+    active: true
+  },
+  # Laguna
+  {
+    name: 'Sta. Rosa Sports Hub',
+    subdomain: 'starosa',
+    owner_name: 'Miguel Torres',
+    owner_email: 'admin@starosa.badminton.ph',
+    phone: '+63 917 234 5679',
+    address: 'Greenfield City',
+    city: 'Sta. Rosa',
+    province: 'Laguna',
+    municipality: 'Sta. Rosa',
+    barangay: 'Don Jose',
+    plan: 'premium',
+    courts: 8,
+    latitude: 14.3123,
+    longitude: 121.1114,
+    active: true
+  },
+  {
+    name: 'Calamba Premier Badminton',
+    subdomain: 'calamba',
+    owner_name: 'Elena Aquino',
+    owner_email: 'admin@calamba.badminton.ph',
+    phone: '+63 917 345 6780',
+    address: 'National Highway',
+    city: 'Calamba',
+    province: 'Laguna',
+    municipality: 'Calamba',
+    barangay: 'Real',
+    plan: 'basic',
+    courts: 5,
+    latitude: 14.2167,
+    longitude: 121.1655,
+    active: true
+  },
+  {
+    name: 'Los Baños Sports Complex',
+    subdomain: 'losbanos',
+    owner_name: 'Carlos Bautista',
+    owner_email: 'admin@losbanos.badminton.ph',
+    phone: '+63 917 456 7891',
+    address: 'Lopez Avenue',
+    city: 'Los Baños',
+    province: 'Laguna',
+    municipality: 'Los Baños',
+    barangay: 'Poblacion',
+    plan: 'basic',
+    courts: 4,
+    latitude: 14.1656,
+    longitude: 121.2414,
+    active: true
+  },
+  # Bulacan
+  {
+    name: 'Malolos Sports Arena',
+    subdomain: 'malolos',
+    owner_name: 'Rosa Hernandez',
+    owner_email: 'admin@malolos.badminton.ph',
+    phone: '+63 917 567 8902',
+    address: 'MacArthur Highway',
+    city: 'Malolos',
+    province: 'Bulacan',
+    municipality: 'Malolos',
+    barangay: 'Poblacion',
+    plan: 'premium',
+    courts: 6,
+    latitude: 14.8433,
+    longitude: 120.8114,
+    active: true
+  },
+  {
+    name: 'San Jose del Monte Badminton Center',
+    subdomain: 'sjdm',
+    owner_name: 'Pedro Dela Cruz',
+    owner_email: 'admin@sjdm.badminton.ph',
+    phone: '+63 917 678 9013',
+    address: 'Quirino Highway',
+    city: 'San Jose del Monte',
+    province: 'Bulacan',
+    municipality: 'San Jose del Monte',
+    barangay: 'Tungkong Mangga',
+    plan: 'basic',
+    courts: 5,
+    latitude: 14.8139,
+    longitude: 121.0453,
+    active: true
+  },
+  # Pampanga
+  {
+    name: 'Angeles City Sports Complex',
+    subdomain: 'angeles',
+    owner_name: 'Luis Gonzales',
+    owner_email: 'admin@angeles.badminton.ph',
+    phone: '+63 917 789 0124',
+    address: 'MacArthur Highway',
+    city: 'Angeles City',
+    province: 'Pampanga',
+    municipality: 'Angeles City',
+    barangay: 'Balibago',
+    plan: 'premium',
+    courts: 8,
+    latitude: 15.1450,
+    longitude: 120.5887,
+    active: true
+  },
+  {
+    name: 'San Fernando Pampanga Badminton Hub',
+    subdomain: 'sanfernando',
+    owner_name: 'Teresa Santos',
+    owner_email: 'admin@sanfernando.badminton.ph',
+    phone: '+63 917 890 1235',
+    address: 'Jose Abad Santos Avenue',
+    city: 'San Fernando',
+    province: 'Pampanga',
+    municipality: 'San Fernando',
+    barangay: 'Del Rosario',
+    plan: 'basic',
+    courts: 4,
+    latitude: 15.0294,
+    longitude: 120.6897,
+    active: true
+  },
+  # Rizal
+  {
+    name: 'Antipolo Sports Arena',
+    subdomain: 'antipolo',
+    owner_name: 'Juan Rizal',
+    owner_email: 'admin@antipolo.badminton.ph',
+    phone: '+63 917 901 2346',
+    address: 'Sumulong Highway',
+    city: 'Antipolo',
+    province: 'Rizal',
+    municipality: 'Antipolo',
+    barangay: 'Dela Paz',
+    plan: 'premium',
+    courts: 7,
+    latitude: 14.5865,
+    longitude: 121.1755,
+    active: true
+  },
+  {
+    name: 'Cainta Badminton Center',
+    subdomain: 'cainta',
+    owner_name: 'Angela Ramos',
+    owner_email: 'admin@cainta.badminton.ph',
+    phone: '+63 917 012 3457',
+    address: 'Ortigas Avenue Extension',
+    city: 'Cainta',
+    province: 'Rizal',
+    municipality: 'Cainta',
+    barangay: 'San Andres',
+    plan: 'basic',
+    courts: 4,
+    latitude: 14.5781,
+    longitude: 121.1222,
+    active: true
+  },
+  # Cebu
+  {
+    name: 'Cebu City Sports Center - Badminton',
+    subdomain: 'cebu',
+    owner_name: 'Ramon Cebu',
+    owner_email: 'admin@cebu.badminton.ph',
+    phone: '+63 917 123 4569',
+    address: 'Osmeña Boulevard',
+    city: 'Cebu City',
+    province: 'Cebu',
+    municipality: 'Cebu City',
+    barangay: 'Tinago',
+    plan: 'enterprise',
+    courts: 10,
+    latitude: 10.3157,
+    longitude: 123.8854,
+    active: true
+  },
+  {
+    name: 'Mandaue Sports Complex',
+    subdomain: 'mandaue',
+    owner_name: 'Sofia Ramirez',
+    owner_email: 'admin@mandaue.badminton.ph',
+    phone: '+63 917 234 5680',
+    address: 'A.S. Fortuna Street',
+    city: 'Mandaue City',
+    province: 'Cebu',
+    municipality: 'Mandaue City',
+    barangay: 'Bakilid',
+    plan: 'premium',
+    courts: 6,
+    latitude: 10.3233,
+    longitude: 123.9222,
+    active: true
+  },
+  {
+    name: 'Lapu-Lapu City Badminton Arena',
+    subdomain: 'lapulapu',
+    owner_name: 'Eduardo Fernandez',
+    owner_email: 'admin@lapulapu.badminton.ph',
+    phone: '+63 917 345 6781',
+    address: 'M.L. Quezon National Highway',
+    city: 'Lapu-Lapu City',
+    province: 'Cebu',
+    municipality: 'Lapu-Lapu City',
+    barangay: 'Poblacion',
+    plan: 'basic',
+    courts: 5,
+    latitude: 10.3103,
+    longitude: 123.9494,
+    active: true
+  },
 
-  # # Bulacan
-  # {
-  #   name: 'Malolos Sports Arena',
-  #   subdomain: 'malolos',
-  #   owner_name: 'Rosa Hernandez',
-  #   owner_email: 'admin@malolos.badminton.ph',
-  #   phone: '+63 917 567 8902',
-  #   address: 'MacArthur Highway',
-  #   city: 'Malolos',
-  #   province: 'Bulacan',
-  #   municipality: 'Malolos',
-  #   barangay: 'Poblacion',
-  #   plan: 'premium',
-  #   courts: 6,
-  #   latitude: 14.8433,
-  #   longitude: 120.8114
-  # },
-  # {
-  #   name: 'San Jose del Monte Badminton Center',
-  #   subdomain: 'sjdm',
-  #   owner_name: 'Pedro Dela Cruz',
-  #   owner_email: 'admin@sjdm.badminton.ph',
-  #   phone: '+63 917 678 9013',
-  #   address: 'Quirino Highway',
-  #   city: 'San Jose del Monte',
-  #   province: 'Bulacan',
-  #   municipality: 'San Jose del Monte',
-  #   barangay: 'Tungkong Mangga',
-  #   plan: 'basic',
-  #   courts: 5,
-  #   latitude: 14.8139,
-  #   longitude: 121.0453
-  # },
-
-  # # Pampanga
-  # {
-  #   name: 'Angeles City Sports Complex',
-  #   subdomain: 'angeles',
-  #   owner_name: 'Luis Gonzales',
-  #   owner_email: 'admin@angeles.badminton.ph',
-  #   phone: '+63 917 789 0124',
-  #   address: 'MacArthur Highway',
-  #   city: 'Angeles City',
-  #   province: 'Pampanga',
-  #   municipality: 'Angeles City',
-  #   barangay: 'Balibago',
-  #   plan: 'premium',
-  #   courts: 8,
-  #   latitude: 15.1450,
-  #   longitude: 120.5887
-  # },
-  # {
-  #   name: 'San Fernando Pampanga Badminton Hub',
-  #   subdomain: 'sanfernando',
-  #   owner_name: 'Teresa Santos',
-  #   owner_email: 'admin@sanfernando.badminton.ph',
-  #   phone: '+63 917 890 1235',
-  #   address: 'Jose Abad Santos Avenue',
-  #   city: 'San Fernando',
-  #   province: 'Pampanga',
-  #   municipality: 'San Fernando',
-  #   barangay: 'Del Rosario',
-  #   plan: 'basic',
-  #   courts: 4,
-  #   latitude: 15.0294,
-  #   longitude: 120.6897
-  # },
-
-  # # Rizal
-  # {
-  #   name: 'Antipolo Sports Arena',
-  #   subdomain: 'antipolo',
-  #   owner_name: 'Juan Rizal',
-  #   owner_email: 'admin@antipolo.badminton.ph',
-  #   phone: '+63 917 901 2346',
-  #   address: 'Sumulong Highway',
-  #   city: 'Antipolo',
-  #   province: 'Rizal',
-  #   municipality: 'Antipolo',
-  #   barangay: 'Dela Paz',
-  #   plan: 'premium',
-  #   courts: 7,
-  #   latitude: 14.5865,
-  #   longitude: 121.1755
-  # },
-  # {
-  #   name: 'Cainta Badminton Center',
-  #   subdomain: 'cainta',
-  #   owner_name: 'Angela Ramos',
-  #   owner_email: 'admin@cainta.badminton.ph',
-  #   phone: '+63 917 012 3457',
-  #   address: 'Ortigas Avenue Extension',
-  #   city: 'Cainta',
-  #   province: 'Rizal',
-  #   municipality: 'Cainta',
-  #   barangay: 'San Andres',
-  #   plan: 'basic',
-  #   courts: 4,
-  #   latitude: 14.5781,
-  #   longitude: 121.1222
-  # },
-
-  # # Cebu
-  # {
-  #   name: 'Cebu City Sports Center - Badminton',
-  #   subdomain: 'cebu',
-  #   owner_name: 'Ramon Cebu',
-  #   owner_email: 'admin@cebu.badminton.ph',
-  #   phone: '+63 917 123 4569',
-  #   address: 'Osmeña Boulevard',
-  #   city: 'Cebu City',
-  #   province: 'Cebu',
-  #   municipality: 'Cebu City',
-  #   barangay: 'Tinago',
-  #   plan: 'enterprise',
-  #   courts: 10,
-  #   latitude: 10.3157,
-  #   longitude: 123.8854
-  # },
-  # {
-  #   name: 'Mandaue Sports Complex',
-  #   subdomain: 'mandaue',
-  #   owner_name: 'Sofia Ramirez',
-  #   owner_email: 'admin@mandaue.badminton.ph',
-  #   phone: '+63 917 234 5680',
-  #   address: 'A.S. Fortuna Street',
-  #   city: 'Mandaue City',
-  #   province: 'Cebu',
-  #   municipality: 'Mandaue City',
-  #   barangay: 'Bakilid',
-  #   plan: 'premium',
-  #   courts: 6,
-  #   latitude: 10.3233,
-  #   longitude: 123.9222
-  # },
-  # {
-  #   name: 'Lapu-Lapu City Badminton Arena',
-  #   subdomain: 'lapulapu',
-  #   owner_name: 'Eduardo Fernandez',
-  #   owner_email: 'admin@lapulapu.badminton.ph',
-  #   phone: '+63 917 345 6781',
-  #   address: 'M.L. Quezon National Highway',
-  #   city: 'Lapu-Lapu City',
-  #   province: 'Cebu',
-  #   municipality: 'Lapu-Lapu City',
-  #   barangay: 'Poblacion',
-  #   plan: 'basic',
-  #   courts: 5,
-  #   latitude: 10.3103,
-  #   longitude: 123.9494
-  # },
-
-  # # Davao
-  # {
-  #   name: 'Davao City Badminton Complex',
-  #   subdomain: 'davao',
-  #   owner_name: 'Maria Davao',
-  #   owner_email: 'admin@davao.badminton.ph',
-  #   phone: '+63 917 456 7892',
-  #   address: 'J.P. Laurel Avenue',
-  #   city: 'Davao City',
-  #   province: 'Davao del Sur',
-  #   municipality: 'Davao City',
-  #   barangay: 'Poblacion',
-  #   plan: 'enterprise',
-  #   courts: 12,
-  #   latitude: 7.0731,
-  #   longitude: 125.6128
-  # },
-  # {
-  #   name: 'Tagum Sports Hub',
-  #   subdomain: 'tagum',
-  #   owner_email: 'admin@tagum.badminton.ph',
-  #   owner_name: 'Gabriel Lopez',
-  #   phone: '+63 917 567 8903',
-  #   address: 'Apokon Road',
-  #   city: 'Tagum City',
-  #   province: 'Davao del Norte',
-  #   municipality: 'Tagum City',
-  #   barangay: 'Apokon',
-  #   plan: 'basic',
-  #   courts: 4,
-  #   latitude: 7.4474,
-  #   longitude: 125.8078
-  # },
-
-  # # Batangas
-  # {
-  #   name: 'Lipa City Badminton Arena',
-  #   subdomain: 'lipa',
-  #   owner_name: 'Benjamin Castro',
-  #   owner_email: 'admin@lipa.badminton.ph',
-  #   phone: '+63 917 678 9014',
-  #   address: 'P. Torres Street',
-  #   city: 'Lipa City',
-  #   province: 'Batangas',
-  #   municipality: 'Lipa City',
-  #   barangay: 'Poblacion',
-  #   plan: 'premium',
-  #   courts: 6,
-  #   latitude: 13.9411,
-  #   longitude: 121.1633
-  # },
+  # Davao
+  {
+    name: 'Davao City Badminton Complex',
+    subdomain: 'davao',
+    owner_name: 'Maria Davao',
+    owner_email: 'admin@davao.badminton.ph',
+    phone: '+63 917 456 7892',
+    address: 'J.P. Laurel Avenue',
+    city: 'Davao City',
+    province: 'Davao del Sur',
+    municipality: 'Davao City',
+    barangay: 'Poblacion',
+    plan: 'enterprise',
+    courts: 12,
+    latitude: 7.0731,
+    longitude: 125.6128,
+    active: true
+  },
+  {
+    name: 'Tagum Sports Hub',
+    subdomain: 'tagum',
+    owner_email: 'admin@tagum.badminton.ph',
+    owner_name: 'Gabriel Lopez',
+    phone: '+63 917 567 8903',
+    address: 'Apokon Road',
+    city: 'Tagum City',
+    province: 'Davao del Norte',
+    municipality: 'Tagum City',
+    barangay: 'Apokon',
+    plan: 'basic',
+    courts: 4,
+    latitude: 7.4474,
+    longitude: 125.8078,
+    active: true
+  },
+  # Batangas
+  {
+    name: 'Lipa City Badminton Arena',
+    subdomain: 'lipa',
+    owner_name: 'Benjamin Castro',
+    owner_email: 'admin@lipa.badminton.ph',
+    phone: '+63 917 678 9014',
+    address: 'P. Torres Street',
+    city: 'Lipa City',
+    province: 'Batangas',
+    municipality: 'Lipa City',
+    barangay: 'Poblacion',
+    plan: 'premium',
+    courts: 6,
+    latitude: 13.9411,
+    longitude: 121.1633,
+    active: true
+  },
   {
     name: 'Batangas City Sports Complex',
     subdomain: 'batangas',
@@ -465,7 +486,8 @@ accounts_data = [
     plan: 'premium',
     courts: 5,
     latitude: 13.7565,
-    longitude: 121.0583
+    longitude: 121.0583,
+    active: true
   }
 ]
 
@@ -479,6 +501,7 @@ accounts_data.each do |account_data|
     a.city = account_data[:city]
     a.province = account_data[:province]
     a.plan = account_data[:plan]
+    a.active = account_data[:active]
   end
 
   puts "  ✓ Account created: #{account.subdomain}"
@@ -522,6 +545,7 @@ accounts_data.each do |account_data|
       v.phone = account_data[:phone]
       v.latitude = account_data[:latitude]
       v.longitude = account_data[:longitude]
+      v.active = true
       v.account = account
     end
 
@@ -543,6 +567,7 @@ accounts_data.each do |account_data|
         c.has_air_conditioning = config[:aircon]
         c.lighting_type = 'led'
         c.ceiling_height = 9.5
+        c.active = true
       end
     end
     puts "    ✓ Created #{court_configs.size} courts"
