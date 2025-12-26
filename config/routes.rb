@@ -66,4 +66,15 @@ Rails.application.routes.draw do
 
   # Root route
   root "pages#home"
+  get 'search', to: 'pages#search'
+
+  resources :bookings do
+    member do
+      get 'confirmation'
+      get 'payment'
+      post 'complete_payment'
+      get 'success'
+      patch 'cancel'
+    end
+  end
 end
