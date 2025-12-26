@@ -72,11 +72,19 @@ gem "acts_as_tenant"
 # Admin Dashboard
 gem 'administrate', '~> 1.0'
 
+# API
+gem "active_model_serializers", "~> 0.10.14"
+gem 'jsonapi-serializer'
+gem "rack-cors"
+
 # Authentication
 gem "devise"
+gem "devise-jwt"
 gem "jwt"
+gem "kaminari"
 
 gem "letter_opener"
+gem "byebug", platforms: %i[ mri mingw x64_mingw ]
 
 group :test do
   gem "shoulda-matchers"
