@@ -1,0 +1,295 @@
+<div class="mb-8">
+  <div class="flex items-center justify-between">
+    <div>
+      <h1 class="text-3xl font-bold text-gray-900">Dashboard</h1>
+      <p class="text-gray-600 mt-1">Welcome back, <%= current_user.first_name %>!</p>
+    </div>
+    <div class="text-right">
+      <div class="text-sm text-gray-600"><%= Date.current.strftime('%A, %B %d, %Y') %></div>
+      <div class="text-lg font-semibold text-gray-900"><%= Time.current.strftime('%I:%M %p') %></div>
+    </div>
+  </div>
+</div>
+
+<!-- Quick Stats -->
+<div class="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+  <!-- Total Bookings -->
+  <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-blue-500">
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-3xl">📅</div>
+      <div class="text-right">
+        <div class="text-sm text-gray-600">Total Bookings</div>
+        <div class="text-3xl font-bold text-gray-900"><%= @total_bookings %></div>
+      </div>
+    </div>
+    <div class="text-sm text-gray-600">
+      <span class="text-green-600 font-semibold"><%= @pending_bookings %></span> pending
+    </div>
+  </div>
+
+  <!-- Revenue -->
+  <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-green-500">
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-3xl">💰</div>
+      <div class="text-right">
+        <div class="text-sm text-gray-600">Total Revenue</div>
+        <div class="text-3xl font-bold text-gray-900">₱<%= number_with_delimiter(@total_revenue, delimiter: ',') %></div>
+      </div>
+    </div>
+    <div class="text-sm text-gray-600">
+      All time earnings
+    </div>
+  </div>
+
+  <!-- Customers -->
+  <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-purple-500">
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-3xl">👥</div>
+      <div class="text-right">
+        <div class="text-sm text-gray-600">Total Customers</div>
+        <div class="text-3xl font-bold text-gray-900"><%= @total_customers %></div>
+      </div>
+    </div>
+    <div class="text-sm text-gray-600">
+      Registered users
+    </div>
+  </div>
+
+  <!-- Today's Bookings -->
+  <div class="bg-white rounded-xl shadow-md p-6 border-l-4 border-yellow-500">
+    <div class="flex items-center justify-between mb-4">
+      <div class="text-3xl">📆</div>
+      <div class="text-right">
+        <div class="text-sm text-gray-600">Today's Bookings</div>
+        <div class="text-3xl font-bold text-gray-900"><%= @today_bookings %></div>
+      </div>
+    </div>
+    <div class="text-sm text-gray-600">
+      Scheduled for today
+    </div>
+  </div>
+</div>
+
+<!-- Charts Section -->
+<div class="grid lg:grid-cols-2 gap-6 mb-8">
+  <!-- Booking Status Chart -->
+  <div class="bg-white rounded-xl shadow-lg p-6">
+    <h2 class="text-xl font-bold mb-6">Booking Status</h2>
+    <div class="space-y-4">
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-700">Confirmed</span>
+          <span class="text-sm font-bold text-green-600"><%= @booking_stats[:confirmed] || 0 %></span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-3">
+          <div class="bg-green-500 h-3 rounded-full" style="width: <%= (@booking_stats[:confirmed] || 0) * 100 / [@total_bookings, 1].max %>%"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-700">Pending</span>
+          <span class="text-sm font-bold text-yellow-600"><%= @booking_stats[:pending] || 0 %></span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-3">
+          <div class="bg-yellow-500 h-3 rounded-full" style="width: <%= (@booking_stats[:pending] || 0) * 100 / [@total_bookings, 1].max %>%"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-700">Completed</span>
+          <span class="text-sm font-bold text-blue-600"><%= @booking_stats[:completed] || 0 %></span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-3">
+          <div class="bg-blue-500 h-3 rounded-full" style="width: <%= (@booking_stats[:completed] || 0) * 100 / [@total_bookings, 1].max %>%"></div>
+        </div>
+      </div>
+
+      <div>
+        <div class="flex justify-between items-center mb-2">
+          <span class="text-sm font-medium text-gray-700">Cancelled</span>
+          <span class="text-sm font-bold text-red-600"><%= @booking_stats[:cancelled] || 0 %></span>
+        </div>
+        <div class="w-full bg-gray-200 rounded-full h-3">
+          <div class="bg-red-500 h-3 rounded-full" style="width: <%= (@booking_stats[:cancelled] || 0) * 100 / [@total_bookings, 1].max %>%"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Payment Methods -->
+  <div class="bg-white rounded-xl shadow-lg p-6">
+    <h2 class="text-xl font-bold mb-6">Payment Methods</h2>
+    <div class="space-y-4">
+      <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+        <div class="flex items-center">
+          <span class="text-2xl mr-3">💵</span>
+          <div>
+            <div class="font-semibold">Cash</div>
+            <div class="text-sm text-gray-600"><%= @payment_stats[:cash] || 0 %> bookings</div>
+          </div>
+        </div>
+        <div class="text-xl font-bold text-gray-900">
+          ₱<%= number_with_delimiter(@payment_amounts[:cash] || 0, delimiter: ',') %>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+        <div class="flex items-center">
+          <span class="text-2xl mr-3">📱</span>
+          <div>
+            <div class="font-semibold">GCash</div>
+            <div class="text-sm text-gray-600"><%= @payment_stats[:gcash] || 0 %> bookings</div>
+          </div>
+        </div>
+        <div class="text-xl font-bold text-gray-900">
+          ₱<%= number_with_delimiter(@payment_amounts[:gcash] || 0, delimiter: ',') %>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+        <div class="flex items-center">
+          <span class="text-2xl mr-3">💳</span>
+          <div>
+            <div class="font-semibold">PayMaya</div>
+            <div class="text-sm text-gray-600"><%= @payment_stats[:paymaya] || 0 %> bookings</div>
+          </div>
+        </div>
+        <div class="text-xl font-bold text-gray-900">
+          ₱<%= number_with_delimiter(@payment_amounts[:paymaya] || 0, delimiter: ',') %>
+        </div>
+      </div>
+
+      <div class="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+        <div class="flex items-center">
+          <span class="text-2xl mr-3">💳</span>
+          <div>
+            <div class="font-semibold">Card</div>
+            <div class="text-sm text-gray-600"><%= @payment_stats[:card] || 0 %> bookings</div>
+          </div>
+        </div>
+        <div class="text-xl font-bold text-gray-900">
+          ₱<%= number_with_delimiter(@payment_amounts[:card] || 0, delimiter: ',') %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Recent Activity -->
+<div class="grid lg:grid-cols-2 gap-6">
+  <!-- Recent Bookings -->
+  <div class="bg-white rounded-xl shadow-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold">Recent Bookings</h2>
+      <%= link_to "View All →", admin_bookings_path, class: "text-blue-600 hover:text-blue-800 font-semibold" %>
+    </div>
+
+    <% if @recent_bookings.any? %>
+      <div class="space-y-4">
+        <% @recent_bookings.each do |booking| %>
+          <div class="border border-gray-200 rounded-lg p-4 hover:border-blue-500 transition">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <div class="font-semibold text-gray-900">
+                  <%= link_to "Booking ##{booking.id}", admin_booking_path(booking), class: "hover:text-blue-600" %>
+                </div>
+                <div class="text-sm text-gray-600">
+                  <%= booking.user.full_name %>
+                </div>
+              </div>
+              <%= booking_status_badge(booking.status) %>
+            </div>
+            <div class="flex justify-between items-center text-sm">
+              <div class="text-gray-600">
+                <span class="font-medium"><%= booking.court.display_name %></span>
+                <br>
+                <%= booking.start_time.strftime('%b %d, %I:%M %p') %>
+              </div>
+              <div class="text-right">
+                <div class="font-bold text-gray-900">₱<%= number_with_delimiter(booking.amount_php, delimiter: ',') %></div>
+                <div class="text-xs text-gray-500"><%= booking.payment_method&.titleize || 'Pending' %></div>
+              </div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-8 text-gray-500">
+        <div class="text-4xl mb-2">📭</div>
+        <p>No recent bookings</p>
+      </div>
+    <% end %>
+  </div>
+
+  <!-- Top Courts -->
+  <div class="bg-white rounded-xl shadow-lg p-6">
+    <div class="flex justify-between items-center mb-6">
+      <h2 class="text-xl font-bold">Popular Courts</h2>
+      <%= link_to "View All →", admin_courts_path, class: "text-blue-600 hover:text-blue-800 font-semibold" %>
+    </div>
+
+    <% if current_account.courts.active.any? %>
+      <div class="space-y-4">
+        <% current_account.courts.active.limit(5).each do |court| %>
+          <div class="flex items-center justify-between p-4 bg-gray-50 rounded-lg hover:bg-gray-100 transition">
+            <div class="flex items-center">
+              <div class="w-12 h-12 bg-gradient-to-br from-blue-500 to-blue-600 rounded-lg flex items-center justify-center text-white font-bold mr-4">
+                <%= court.court_number %>
+              </div>
+              <div>
+                <div class="font-semibold text-gray-900"><%= court.display_name %></div>
+                <div class="text-sm text-gray-600">
+                  <%= court.court_type.titleize %> • <%= court.floor_type.titleize %>
+                </div>
+              </div>
+            </div>
+            <div class="text-right">
+              <div class="text-xl font-bold text-blue-600">
+                <%= court.bookings.count %>
+              </div>
+              <div class="text-xs text-gray-500">bookings</div>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% else %>
+      <div class="text-center py-8 text-gray-500">
+        <div class="text-4xl mb-2">🏸</div>
+        <p>No courts available</p>
+        <%= link_to "Add Court", new_admin_court_path, class: "inline-block mt-4 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="mt-8 bg-gradient-to-r from-blue-600 to-blue-700 rounded-xl shadow-lg p-8 text-white">
+  <h2 class="text-2xl font-bold mb-6">Quick Actions</h2>
+  <div class="grid md:grid-cols-4 gap-4">
+    <%= link_to admin_bookings_path(status: 'pending'), class: "bg-white/20 hover:bg-white/30 backdrop-blur rounded-xl p-6 text-center transition" do %>
+      <div class="text-4xl mb-3">⏳</div>
+      <div class="font-semibold mb-1">Pending Bookings</div>
+      <div class="text-2xl font-bold"><%= @pending_bookings %></div>
+    <% end %>
+
+    <%= link_to admin_bookings_path(date: Date.current), class: "bg-white/20 hover:bg-white/30 backdrop-blur rounded-xl p-6 text-center transition" do %>
+      <div class="text-4xl mb-3">📅</div>
+      <div class="font-semibold mb-1">Today's Schedule</div>
+      <div class="text-2xl font-bold"><%= @today_bookings %></div>
+    <% end %>
+
+    <%= link_to admin_users_path, class: "bg-white/20 hover:bg-white/30 backdrop-blur rounded-xl p-6 text-center transition" do %>
+      <div class="text-4xl mb-3">👥</div>
+      <div class="font-semibold mb-1">Manage Users</div>
+      <div class="text-sm">View all customers</div>
+    <% end %>
+
+    <%= link_to admin_reports_path, class: "bg-white/20 hover:bg-white/30 backdrop-blur rounded-xl p-6 text-center transition" do %>
+      <div class="text-4xl mb-3">📊</div>
+      <div class="font-semibold mb-1">View Reports</div>
+      <div class="text-sm">Analytics & insights</div>
+    <% end %>
+  </div>
+</div>

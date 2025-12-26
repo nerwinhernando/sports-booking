@@ -88,6 +88,43 @@ Rails.application.routes.draw do
     namespace :admin do
       get '/', to: 'dashboard#index', as: :root
       get 'dashboard', to: 'dashboard#index'
+      get 'analytics', to: 'dashboard#analytics'
+      get 'reports', to: 'dashboard#reports'
+
+      resources :users do
+        member do
+          patch :toggle_active
+          patch :change_role
+          patch :reset_password
+        end
+        collection do
+          get :search
+          get :export
+        end
+      end
+
+      resources :courts do
+        member do
+          patch :toggle_active
+        end
+        resources :schedule_blocks, only: [:new, :create]
+      end
+
+      resources :bookings do
+        member do
+          patch :confirm
+          patch :complete
+          patch :cancel
+          patch :refund
+          get :receipt
+        end
+        collection do
+          get :pending
+          get :confirmed
+          get :today
+          get :export
+        end
+      end
     end
 
     namespace :staff do
