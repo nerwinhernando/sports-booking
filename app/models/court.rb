@@ -18,4 +18,8 @@ class Court < ApplicationRecord
   scope :by_type, ->(type) { where(court_type: type) if type.present? }
   scope :by_floor_type, ->(floor) { where(floor_type: floor) if floor.present? }
   scope :with_aircon, -> { where(has_air_conditioning: true) }
+
+  def display_name
+    "#{court_number} (#{court_type.titleize})"
+  end
 end
