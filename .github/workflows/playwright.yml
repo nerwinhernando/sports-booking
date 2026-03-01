@@ -74,14 +74,14 @@ jobs:
         BASE_URL: http://localhost:3000
       run: npx playwright test
     
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       if: always()
       with:
         name: playwright-report
         path: playwright-report/
         retention-days: 30
     
-    - uses: actions/upload-artifact@v6
+    - uses: actions/upload-artifact@v7
       if: always()
       with:
         name: test-results
